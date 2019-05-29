@@ -20,7 +20,7 @@ from six.moves import range
 from typing_extensions import Text  # pylint: disable=unused-import
 # move to a regular typing import when Python 3.3-3.6 is no longer supported
 
-from . import command_line_tool, context, expression
+from . import command_line_tool, context, expression, toolfactory
 from .builder import content_limit_respected_read
 from .checker import can_assign_src_to_sink, static_checker
 from .context import LoadingContext  # pylint: disable=unused-import
@@ -53,6 +53,8 @@ def default_make_tool(toolpath_object,      # type: MutableMapping[Text, Any]
             return command_line_tool.ExpressionTool(toolpath_object, loadingContext)
         if toolpath_object["class"] == "Workflow":
             return Workflow(toolpath_object, loadingContext)
+        if toolpath_object["class"] == "ToolFactory":
+            return toolfactory.ToolFactory(toolpath_object, loadingContext)
 
     raise WorkflowException(
         u"Missing or invalid 'class' field in "
