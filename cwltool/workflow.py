@@ -181,6 +181,7 @@ def object_from_state(state,                  # Dict[Text, WorkflowStateItem]
 class WorkflowJobStep(object):
     def __init__(self, step):
         # type: (WorkflowStep) -> None
+        """Initialize this WorkflowJobStep."""
         self.step = step
         self.tool = step.tool
         self.id = step.id
@@ -210,6 +211,7 @@ class WorkflowJobStep(object):
 class WorkflowJob(object):
     def __init__(self, workflow, runtimeContext):
         # type: (Workflow, RuntimeContext) -> None
+        """Initialize this WorkflowJob."""
         self.workflow = workflow
         self.prov_obj = None  # type: Optional[ProvenanceProfile]
         self.parent_wf = None  # type: Optional[ProvenanceProfile]
@@ -414,10 +416,8 @@ class WorkflowJob(object):
             step.completed = True
 
 
-    def run(self, runtimeContext):
-        '''
-        logs the start of each workflow
-        '''
+    def run(self, runtimeContext, tmpdir_lock=None):
+        """Log the start of each workflow."""
         _logger.info(u"[%s] start", self.name)
 
     def job(self,
@@ -504,6 +504,7 @@ class Workflow(Process):
                  toolpath_object,      # type: MutableMapping[Text, Any]
                  loadingContext        # type: LoadingContext
                 ):  # type: (...) -> None
+        """Initializet this Workflow."""
         super(Workflow, self).__init__(
             toolpath_object, loadingContext)
         self.provenance_object = None  # type: Optional[ProvenanceProfile]
@@ -606,6 +607,7 @@ class WorkflowStep(Process):
                  loadingContext,       # type: LoadingContext
                  parentworkflowProv=None  # type: Optional[ProvenanceProfile]
                 ):  # type: (...) -> None
+        """Initialize this WorkflowStep."""
         if "id" in toolpath_object:
             self.id = toolpath_object["id"]
         else:
@@ -812,6 +814,7 @@ class ReceiveScatterOutput(object):
                  dest,             # type: Dict[Text, List[Optional[Text]]]
                  total             # type: int
                 ):  # type: (...) -> None
+        """Initialize."""
         self.dest = dest
         self.completed = 0
         self.processStatus = u"success"
@@ -981,7 +984,7 @@ def _flat_crossproduct_scatter(process,        # type: WorkflowJobStep
                                startindex,     # type: int
                                runtimeContext  # type: RuntimeContext
                               ):  # type: (...) -> Tuple[List[Generator], int]
-    """ Inner loop. """
+    """Inner loop."""
     scatter_key = scatter_keys[0]
     jobl = len(joborder[scatter_key])
     steps = []
